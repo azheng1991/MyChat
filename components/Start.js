@@ -8,7 +8,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-//const image = "/assets/Background.png";
+const image = "/assets/Background.png";
 
 export default class Start extends React.Component {
   constructor() {
@@ -39,7 +39,7 @@ export default class Start extends React.Component {
               style={[styles.colorButton, styles.color1]}
             />
             <TouchableOpacity
-              onPress={() => this.setState({ color: "#474056" })}
+              onPress={() => this.setState({ color: "purple" })}
               style={[styles.colorButton, styles.color2]}
             />
             <TouchableOpacity
@@ -73,10 +73,11 @@ export default class Start extends React.Component {
 
 const styles = StyleSheet.create({
   backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "space-evenly",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
     alignItems: "center",
+    flex: 1,
   },
   textContainer: {
     width: "88%",
@@ -88,11 +89,9 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 45,
-    marginTop: 150,
-    marginBottom: 150,
     fontWeight: "600",
-    color: "#ffffff",
-    textAlign: "center",
+    color: "#FFFFFF",
+    marginBottom: 100,
   },
   nameText: {
     height: 70,
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     fontWeight: "300",
     color: "#757083",
     opacity: 0.5,
-    textAlign: "left",
+    textAlign: "center",
     borderColor: "grey",
     borderWidth: 2,
     padding: 20,
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#090C08",
   },
   color2: {
-    backgroundColor: "#474056",
+    backgroundColor: "purple",
   },
   color3: {
     backgroundColor: "#8A95A5",

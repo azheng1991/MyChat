@@ -44,13 +44,14 @@ export default class Chat extends Component {
       if (!user) {
         try {
           await firebase.auth().signInAnonymously();
+          console.log(user);
         } catch (error) {
           console.log(`Unable to sign in: ${error.message}`);
         }
       }
       this.setState({
         user: {
-          _id: user._id,
+          _id: user.uid,
           name: this.props.route.params.name,
           avatar: "https://placeimg.com/140/140/any",
         },
@@ -64,16 +65,13 @@ export default class Chat extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribe = this.referenceMessages
-      .orderBy("createdAt", "desc")
-      .onSnapshot(this.onCollectionUpdate);
-
     this.authUnsubscribe();
     this.unsubscribe();
   }
 
   //Function to sned messages
   onSend(messages = []) {
+    console.log(messages);
     this.setState(
       (previousState) => ({
         messages: GiftedChat.append(previousState.messages, messages),
@@ -84,16 +82,17 @@ export default class Chat extends Component {
     );
   }
 
-  //Updates the messages in the state from Firestore when called
+  //Updates the messages in the state
   onCollectionUpdate = (querySnapshot) => {
     const messages = [];
     // loop through documents
     querySnapshot.forEach((doc) => {
       // get data snapshot
       const data = doc.data();
+
       messages.push({
         _id: data._id,
-        text: data.text.toString(),
+        text: data.text,
         createdAt: data.createdAt.toDate(),
         user: {
           _id: data.user._id,
