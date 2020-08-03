@@ -38,7 +38,7 @@ export default class Chat extends Component {
     this.referenceMessages = firebase.firestore().collection("messages");
   }
 
-  //authenticates the user, sets the state to sned messages and gets past messages
+  //authenticates the user, sets the state to send messages and unsubscribes Firestone
   componentDidMount() {
     this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) {
@@ -64,14 +64,14 @@ export default class Chat extends Component {
     });
   }
 
+  //unsubscribes componentDidMount()
   componentWillUnmount() {
     this.authUnsubscribe();
     this.unsubscribe();
   }
 
-  //Function to sned messages
+  //Function to send messages
   onSend(messages = []) {
-    console.log(messages);
     this.setState(
       (previousState) => ({
         messages: GiftedChat.append(previousState.messages, messages),
@@ -125,7 +125,7 @@ export default class Chat extends Component {
     //Get selected user name
     let name = this.props.route.params.name;
 
-    //Set title to usernam
+    //Set title to username
     this.props.navigation.setOptions({ title: name });
 
     return (
