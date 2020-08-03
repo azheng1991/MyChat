@@ -50,7 +50,7 @@ export default class Chat extends Component {
       }
       this.setState({
         user: {
-          _id: user.uid,
+          _id: user._id,
           name: this.props.route.params.name,
           avatar: "https://placeimg.com/140/140/any",
         },
