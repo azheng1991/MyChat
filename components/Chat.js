@@ -5,6 +5,10 @@ import { GiftedChat, InputToolbar } from "react-native-gifted-chat";
 
 import NetInfo from "@react-native-community/netinfo";
 
+import CustomActions from "./CustomActions.js";
+
+import MapView from "react-native-maps";
+
 // import firestore/firebase
 const firebase = require("firebase");
 require("firebase/firestore");
@@ -21,6 +25,8 @@ export default class Chat extends Component {
       },
       loggedInText: "",
       isConnected: false,
+      image: null,
+      location: null,
     };
 
     // connect to firestore
@@ -104,7 +110,6 @@ export default class Chat extends Component {
     querySnapshot.forEach((doc) => {
       // get data snapshot
       const data = doc.data();
-      console.log(data);
       messages.push({
         _id: data._id,
         text: data.text,
@@ -114,6 +119,8 @@ export default class Chat extends Component {
           name: data.user.name,
           avatar: data.user.avatar,
         },
+        image: data.image || "",
+        location: data.location,
       });
     });
     this.setState({
@@ -129,6 +136,8 @@ export default class Chat extends Component {
       text: message.text || "",
       createdAt: message.createdAt,
       user: message.user,
+      image: message.image || "",
+      location: message.location || null,
       sent: true,
     });
   };
@@ -175,6 +184,36 @@ export default class Chat extends Component {
     }
   };
 
+  //Render "action" button to be defined in CustomActions.js
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
+  renderCustomView(props) {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <View>
+          <MapView
+            style={{
+              width: 300,
+              height: 200,
+              borderRadius: 10,
+              margin: 4,
+            }}
+            region={{
+              latitude: currentMessage.location.latitude,
+              longitude: currentMessage.location.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+        </View>
+      );
+    }
+    return null;
+  }
+
   render() {
     //Get seleceted background color
     let bcolor = this.props.route.params.color;
@@ -195,8 +234,11 @@ export default class Chat extends Component {
       >
         <Text>{this.state.loggedInText}</Text>
 
+        {/* includes renderActions this time*/}
         <GiftedChat
+          renderCustomView={this.renderCustomView}
           renderInputToolbar={this.renderInputToolbar}
+          renderActions={this.renderCustomActions}
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
