@@ -62,7 +62,7 @@ export default class Start extends React.Component {
                 })
               }
             >
-              Start Chatting Now
+              Start Chatting
             </Text>
           </TouchableOpacity>
         </View>
